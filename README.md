@@ -1,7 +1,7 @@
 SI Units
 -
 
-###To run:
+### To run:
 
 The docker container can be run in 2 different modes, depending on how the environment variable `ENV` is set:
 
@@ -50,7 +50,8 @@ Response:
 ```{"unit_name": "(s*s)", "multiplication_factor": 216000.0}```
 
 ---
-###Files in this repo:
+
+### Files in this repo:
 
 - scripts/start_service.sh: command run in docker container to start api
 - service/main.py: conversion code and api
