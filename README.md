@@ -24,7 +24,7 @@ Start API in **production** mode:
 
 Start API in **production** mode with 20 workers:
 
-```docker run --rm -it -e WORKERS=20 -p8000:8000 <image_id>```
+```docker run --rm -it -e WORKERS=20 -p "8000:8000" <image_id>```
 
 Start API in **debug** mode:
  
@@ -49,7 +49,8 @@ Response:
 ###         Files in this repo:
 
 - scripts/start_service.sh: command run in docker container to start api
-- service/main.py: conversion code and api
+- service/conversion.py: conversion code
+- service/main.py: api code
 - service/wsgi.py: needed for the uwsgi server
 - tests/test_conversion.py: test cases
 - Dockerfile: to create python3 environment with dependencies
