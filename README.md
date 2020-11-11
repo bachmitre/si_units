@@ -32,7 +32,7 @@ Start API in **debug** mode:
 
 Run **test cases**:
 
-```docker run --rm -v $(pwd):/app <image_id> pytest```
+```docker run --rm -it <image_id> pytest```
 
 ---
 
