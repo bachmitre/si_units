@@ -24,7 +24,7 @@ Start API in **production** mode:
 
 Start API in **production** mode with 20 workers:
 
-```docker run --rm -it -e WORKERS=20 -p8000:8000 si_units_tests:latest```
+```docker run --rm -it -e WORKERS=20 -p8000:8000 <image_id>```
 
 Start API in **debug** mode:
  
