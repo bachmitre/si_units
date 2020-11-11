@@ -1,5 +1,5 @@
 # coding: utf8
-import service.main
+import service.conversion
 
 
 def test_conversion():
@@ -57,7 +57,7 @@ def test_conversion():
     for k, v in test_cases.items():
         unit_name, multiplication_factor = None, None
         try:
-            unit_name, multiplication_factor = service.main.to_unit_name_and_factor(k)
+            unit_name, multiplication_factor = service.conversion.to_unit_name_and_factor(k)
         except:
             pass
         finally:
