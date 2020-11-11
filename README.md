@@ -5,7 +5,7 @@ SI Units
 
 The docker container can be run in 2 different modes, depending on how the environment variable `ENV` is set:
 
- - per **default** a uwsgi server with 5 workers will be started (number of workers can be adjusted with `WORKERS` env variable)
+ - per **default** a wsgi server with 5 workers will be started (number of workers can be adjusted with `WORKERS` env variable)
  - with `ENV=debug` a single threaded flask debug server will be started
 
 
@@ -24,7 +24,7 @@ Start API in **production** mode:
 
 Start API in **production** mode with 20 workers:
 
-```docker run --rm -it -e WORKERS=20 -p "8000:8000" <image_id>```
+```docker run --restart=always -d -e WORKERS=20 -p "8000:8000" <image_id>```
 
 Start API in **debug** mode:
  
@@ -51,7 +51,7 @@ Response:
 - scripts/start_service.sh: command run in docker container to start api
 - service/conversion.py: conversion code
 - service/main.py: api code
-- service/wsgi.py: needed for the uwsgi server
+- service/wsgi.py: needed for gunicorn
 - tests/test_conversion.py: test cases
 - Dockerfile: to create python3 environment with dependencies
 - README.md: this file
