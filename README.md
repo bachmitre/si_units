@@ -54,7 +54,7 @@ Response:
 ###         Files in this repo:
 
 - scripts/start_service.sh: command run in docker container to start api
-- service/cache_utils.py: utility functions for internal caching and http cache control
+- service/cache_utils.py: utility function for http cache control
 - service/conversion.py: conversion code
 - service/main.py: api code
 - service/wsgi.py: needed for gunicorn

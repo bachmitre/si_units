@@ -2,12 +2,9 @@ from flask import Flask, request, abort
 import json
 import os
 import conversion
-from cache_utils import cache_control, LRUCache
+from cache_utils import cache_control
 
 app = Flask(__name__)
-
-# store CACHE_SIZE most recently used request/response in cache
-cache = LRUCache(int(os.environ.get('CACHE_SIZE', 10000)))
 
 # conversion rest endpoint
 # allow response to be cached by intermediate caches
@@ -24,18 +21,12 @@ def convert_units():
 
     # any mal-formatted expression or invalid input unit will result in a 400 error
     try:
-        # check if result is in cache
-        result = cache.get(input_units)
-        if not result:
-            units, factor = conversion.to_unit_name_and_factor(input_units)
-            result = dict(unit_name=units, multiplication_factor=factor)
-            # add result to cache
-            cache.put(input_units, result)
+        units, factor = conversion.to_unit_name_and_factor(input_units)
     except Exception as e:
         app.logger.error("Error converting {}: {}".format(input_units, e))
         abort(400)
 
-    return json.dumps(result)
+    return json.dumps(dict(unit_name=units, multiplication_factor=factor))
 
 
 # main function for flask in debug mode (note: this is *not* used when started via gunicorn)

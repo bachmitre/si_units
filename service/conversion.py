@@ -1,6 +1,8 @@
 # coding: utf8
+import os
 import math
 import re
+from functools import lru_cache
 from decimal import Decimal, getcontext
 
 # set decimal precision to 14 significant digits
@@ -102,6 +104,8 @@ conversion_factors = {
 
 
 # main conversion function
+# function io is cached in lru cache
+@lru_cache(maxsize=int(os.environ.get('CACHE_SIZE', 10000)))
 def to_unit_name_and_factor(units):
     """
     Converts expression of valid input units to si units and multiplication factor
