@@ -2,12 +2,17 @@ from flask import Flask, request, abort
 import json
 import os
 import conversion
+from cache_utils import cache_control, LRUCache
 
 app = Flask(__name__)
 
+# store CACHE_SIZE most recently used request/response in cache
+cache = LRUCache(int(os.environ.get('CACHE_SIZE', 10000)))
 
-# rest api
+# conversion rest endpoint
+# allow response to be cached by intermediate caches
 @app.route("/units/si", methods=['GET'])
+@cache_control(hours=24*365)
 def convert_units():
     """
     The input is an expression of units as a "units" query parameter
@@ -15,18 +20,24 @@ def convert_units():
     """
 
     # make sure we get a "units" query parameter
-    units = request.args.get('units') or abort(400)
+    input_units = request.args.get('units') or abort(400)
 
     # any mal-formatted expression or invalid input unit will result in a 400 error
     try:
-        units, factor = conversion.to_unit_name_and_factor(units)
+        # check if result is in cache
+        result = cache.get(input_units)
+        if not result:
+            units, factor = conversion.to_unit_name_and_factor(input_units)
+            result = dict(unit_name=units, multiplication_factor=factor)
+            # add result to cache
+            cache.put(input_units, result)
     except:
         abort(400)
 
-    return json.dumps(dict(unit_name=units, multiplication_factor=factor))
+    return json.dumps(result)
 
 
-# main function for flask in debug mode (note: this is not used when started via gunicorn)
+# main function for flask in debug mode (note: this is *not* used when started via gunicorn)
 if __name__ == "__main__":
     if os.environ['ENV'] == 'debug':
         app.run(

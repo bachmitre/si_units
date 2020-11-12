@@ -3,13 +3,18 @@ SI Units
 
 ### To run:
 
-The docker container can be run in 2 different modes, depending on how the environment variable `ENV` is set:
+The docker container can be run in **production** mode or in **debug** mode, depending on how the environment variable `ENV` is set:
 
  - per **default** a wsgi server with 5 workers will be started (number of workers can be adjusted with `WORKERS` env variable)
  - with `ENV=debug` a single threaded flask debug server will be started
 
 
 Either way, the server will listen on port `8000`
+
+Since the response of the api for any specific input does not change, once calculated it will be cached for future responses instead of re-calculated.
+The size of the cache can be controlled by setting the environment variable `CACHE_SIZE`. If not set the cache size will default to 10000. 
+
+In addition the response includes cache control headers to allow intermediate http caching. 
 
 ---
  
@@ -49,6 +54,7 @@ Response:
 ###         Files in this repo:
 
 - scripts/start_service.sh: command run in docker container to start api
+- service/cache_utils.py: utility functions for internal caching and http cache control
 - service/conversion.py: conversion code
 - service/main.py: api code
 - service/wsgi.py: needed for gunicorn
