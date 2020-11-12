@@ -31,7 +31,8 @@ def convert_units():
             result = dict(unit_name=units, multiplication_factor=factor)
             # add result to cache
             cache.put(input_units, result)
-    except:
+    except Exception as e:
+        app.logger.error("Error converting {}: {}".format(input_units, e))
         abort(400)
 
     return json.dumps(result)
